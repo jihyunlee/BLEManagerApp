@@ -1,17 +1,18 @@
 #import "BLEPeripheralManager.h"
 #import "BLEDefines.h"
+#import <CoreLocation/CoreLocation.h>
 
 @implementation BTLEPeripheral
 
 @synthesize peripheralManager;
-@synthesize activePeripheral;
+@synthesize myself;
 @synthesize transferCharacteristic;
 @synthesize dataToSend;
 @synthesize sendDataIndex;
 
 
 #define NOTIFY_MTU      20
-
+#define GROCERY_SERVICE_UUID @"11111111-2222-3333-4444-555557777777"
 
 #pragma mark - View Lifecycle
 
@@ -45,21 +46,46 @@
     // We're in CBPeripheralManagerStatePoweredOn state...
     NSLog(@"self.peripheralManager powered on.");
     
-    activePeripheral = peripheral;
+    myself = peripheral;
+
+    
+    NSString *characteristicUUID = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    
+    self.transferCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:characteristicUUID] properties:CBCharacteristicPropertyNotify value:nil permissions:CBAttributePermissionsReadable];
+    
+    CBMutableService *transferService = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:GROCERY_SERVICE_UUID] primary:YES];
+    
+    transferService.characteristics = @[self.transferCharacteristic];
+    
+    [self.peripheralManager addService:transferService];
+    
+    [self.peripheralManager startAdvertising:@{ CBAdvertisementDataServiceUUIDsKey : @[[CBUUID UUIDWithString:GROCERY_SERVICE_UUID]], CBAdvertisementDataLocalNameKey : @"milk" }];
+    
+    
+    
+    
+    
+    
+    
+//    [self doStartAdvertising:@"hello" identifier:@"jihyun"];
+//    [self doStartAdvertising:@"hellojihyun"];
+//    [self doAddService:@"grocery" key:@"fruit" value:@"banana"];
 }
 
 
-- (void)doAddService:(NSString *)serviceName key:(NSString *)characteristicKey value:(NSData *)characteristicValue{
+- (void)doAddService:(NSString *)serviceName key:(NSString *)characteristicKey value:(NSString *)characteristicValue{
     
     // If we're already advertising, stop
     if (self.peripheralManager.isAdvertising) {
         [self.peripheralManager stopAdvertising];
     }
+
+    NSData* data = [characteristicValue dataUsingEncoding:NSUTF8StringEncoding];
     
     // Start with the CBMutableCharacteristic
     self.transferCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:characteristicKey]
                                                                      properties:CBCharacteristicPropertyNotify
-                                                                          value:characteristicValue
+                                                                          value:data
                                                                     permissions:CBAttributePermissionsReadable];
     
     // Then the service
@@ -83,6 +109,18 @@
     
 }
 
+//- (void)doStartAdvertising:(NSString *)UUID identifier:(NSString *)Identifier{
+//    
+//    NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:UUID];
+//    
+//    CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:Identifier];
+//    
+//    NSDictionary *beaconPeripheralData = [beaconRegion peripheralDataWithMeasuredPower:nil];
+//    
+//    NSLog(@"dictionary : %@", beaconPeripheralData);
+//    
+//    [myself startAdvertising:beaconPeripheralData];
+//}
 
 - (void)doStartAdvertising:(NSString *)serviceName {
     [self.peripheralManager startAdvertising:@{ CBAdvertisementDataServiceUUIDsKey : @[[CBUUID UUIDWithString:serviceName]] }];

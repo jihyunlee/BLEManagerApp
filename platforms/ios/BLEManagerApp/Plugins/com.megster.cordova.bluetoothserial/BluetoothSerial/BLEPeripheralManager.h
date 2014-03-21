@@ -19,7 +19,7 @@
 
 @property (nonatomic,assign) id <BTLEPeripheralDelegate> delegate;
 @property (strong, nonatomic) CBPeripheralManager       *peripheralManager;
-@property (strong, nonatomic) CBPeripheral              *activePeripheral;
+@property (strong, nonatomic) CBPeripheralManager       *myself;
 @property (strong, nonatomic) CBMutableCharacteristic   *transferCharacteristic;
 @property (strong, nonatomic) NSData                    *dataToSend;
 @property (nonatomic, readwrite) NSInteger              sendDataIndex;
@@ -30,7 +30,7 @@
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral;
 
 // add service
-- (void)doAddService:(NSString *)serviceName key:(NSString *)characteristicKey value:(NSData *)characteristicValue;
+- (void)doAddService:(NSString *)serviceName key:(NSString *)characteristicKey value:(NSString *)characteristicValue;
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didAddService:(NSError *)error;
 
 // advertising
@@ -38,5 +38,6 @@
 - (void)doStopAdvertising;
 - (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error;
 
+//- (void)doStartAdvertising:(NSString *)UUID identifier:(NSString *)Identifier;
 
 @end

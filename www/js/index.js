@@ -41,8 +41,9 @@ setStatus: function(status) {
     app.timeoutId = setTimeout(function() { messageDiv.innerText = ""; }, 4000);
 },
 allPeripherals: {}, // global-ish object, holding all our found peripherals
+
 ondevicelist: function(devices) {
-    
+
     console.log("devicelist", devices);
     
     var listItem, deviceId, rssi;
@@ -51,28 +52,34 @@ ondevicelist: function(devices) {
     deviceList.innerHTML = "";
     app.setStatus("");
     
+    var chickenParma = ["chicken", "pepper", "cheese", "garlicPowder", "oil", "marinaraSauce", "ItalianSeasoning"];
+    
     devices.forEach(function(device) {
-                    console.log("==========================");
-                    console.log(device);
-
-                    listItem = document.createElement('li');
-                    listItem.className = "topcoat-list__item";
-                    if (device.hasOwnProperty("uuid")) { // TODO https://github.com/don/BluetoothSerial/issues/5
-                    deviceId = device.uuid;
-                    } else if (device.hasOwnProperty("address")) {
-                    deviceId = device.address;
-                    } else {
-                    deviceId = "ERROR " + JSON.stringify(device);
-                    }
-                    if (device.hasOwnProperty("uuid")) {
-                        rssi = device.rssi;
-                    } else {
-                        rssi = "unknown";
-                    }
-                    listItem.setAttribute('deviceId', device.address);
-                    listItem.innerHTML = device.name + "<br/>" + rssi + "<br/><i>" + deviceId + "</i>";
-                    deviceList.appendChild(listItem);
-                    });
+        listItem = document.createElement('li');
+        listItem.className = "topcoat-list__item";
+        if (device.hasOwnProperty("uuid")) { // TODO https://github.com/don/BluetoothSerial/issues/5
+            deviceId = device.uuid;
+        } else if (device.hasOwnProperty("address")) {
+            deviceId = device.address;
+        } else {
+            deviceId = "ERROR " + JSON.stringify(device);
+        }
+        if (device.hasOwnProperty("uuid")) {
+            rssi = device.rssi;
+        } else {
+            rssi = "unknown";
+        }
+        
+        listItem.setAttribute('deviceId', device.address);
+                    
+        var randomnumber=Math.floor(Math.random()*11);
+        var img = document.createElement('img');
+        img.src = "img/"+chickenParma[randomnumber]+".png";
+                    
+        listItem.innerHTML = device.name + "<br/>" + rssi + "<br/><i>" + deviceId + "</i>";
+        listItem.appendChild(img);
+        deviceList.appendChild(listItem);
+    });
     
     if (devices.length === 0) {
         

@@ -228,6 +228,11 @@ static bool isConnected = false;
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)writePeripheralName {
+    
+//    [PM startAdvertising:"hello" : "jihyun" ];
+}
+
 - (void)writePeripheralName:(CBPeripheral *)peripheral name:(NSString *)serviceName key:(NSString *)characteristicKey value:(NSData *)characteristicValue {
     
     if(!peripheral) {

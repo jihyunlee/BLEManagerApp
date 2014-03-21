@@ -41,8 +41,9 @@ setStatus: function(status) {
     app.timeoutId = setTimeout(function() { messageDiv.innerText = ""; }, 4000);
 },
 allPeripherals: {}, // global-ish object, holding all our found peripherals
+
 ondevicelist: function(devices) {
-    
+
     console.log("devicelist", devices);
     
     var listItem, deviceId, rssi;
@@ -50,6 +51,8 @@ ondevicelist: function(devices) {
     // remove existing devices
     deviceList.innerHTML = "";
     app.setStatus("");
+    
+    var chickenParma = ["chicken", "pepper", "cheese", "garlicPowder", "oil", "marinaraSauce", "ItalianSeasoning"];
     
     devices.forEach(function(device) {
                     console.log("==========================");
@@ -70,7 +73,16 @@ ondevicelist: function(devices) {
                         rssi = "unknown";
                     }
                     listItem.setAttribute('deviceId', device.address);
+                    
+                    var randomnumber=Math.floor(Math.random()*11);
+                    var img = document.createElement('img');
+                    img.src = "img/"+chickenParma[randomnumber]+".png";
+                    
+                  
+                    console.log("listitem",listItem);
+                    
                     listItem.innerHTML = device.name + "<br/>" + rssi + "<br/><i>" + deviceId + "</i>";
+                    listItem.appendChild(img);
                     deviceList.appendChild(listItem);
                     });
     
@@ -86,7 +98,9 @@ ondevicelist: function(devices) {
         app.setStatus("Found " + devices.length + " device" + (devices.length === 1 ? "." : "s."));
     }
     setTimeout(app.list, 100);
+ 
 },
+
 generateFailureFunction: function(message) {
     var func = function(reason) {
         var details = "";
