@@ -36,7 +36,7 @@ input {
     height:100%;
 }
 
-.verticalLine{
+#verticalLine{
     position:absolute;
     top:0px;
     left:100px;
