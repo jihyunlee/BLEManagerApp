@@ -125,7 +125,7 @@ updateCircleOrder: function(){
             var tempTop = Math.floor(((gap/2)+(gap*counter)));
             tempTop += topMargin;
             temp.y = tempTop;
-            temp.circleImage.style.top = (tempTop-(app.circleSize/2))+'px';
+            temp.circleImage.style.top = Math.floor(tempTop-(app.circleSize/2))+'px';
             counter++;
         }
     }
