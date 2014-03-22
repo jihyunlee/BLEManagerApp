@@ -43,8 +43,13 @@ setStatus: function(status) {
 allPeripherals: {}, // global-ish object, holding all our found peripherals
 
 ondevicelist: function(devices) {
-
-    console.log("devicelist", devices);
+    
+    // sort by distance (rssi)
+    devices = devices.sort(function(a,b){
+        if(a.rssi > 0) return 1;
+        if(b.rssi > 0) return -1;
+        return b.rssi-a.rssi;
+    });
     
     var listItem, deviceId, rssi;
     
