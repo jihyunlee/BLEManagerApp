@@ -71,7 +71,7 @@ input {
 #status{
     position: absolute;
     left:200px;
-    top:0px;
+    top:10px;
 }
 
 #getItButton{
