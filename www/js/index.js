@@ -10,24 +10,25 @@ bind: function() {
     document.addEventListener('deviceready', this.deviceready, false);
     colorScreen.hidden = true;
 },
+circleX: 100;
 deviceready: function() {
+    
     if(window.cordova.logger) {
         window.cordova.logger.__onDeviceReady();
     }
+        
+    var line = document.getElementById('verticalLine');
+    line.style.left = this.circleX+'px';
     
     // wire buttons to functions
     refreshButton.ontouchstart = app.list;
     disconnectButton.ontouchstart = app.disconnect;
-    
-    setTimeout(app.list, 2000);
 },
 setName: function(name) {
     BluetoothSerial.writePeripheralName("grocery","item","milk");
 },
 list: function(event) {
-    console.log("=====================list========================");
-    deviceList.firstChild.innerHTML = "Discovering...";
-    app.setStatus("Looking for Bluetooth Devices...");
+    document.getElementById('status').innerHTML = "Discovering...";
     
     bluetoothSerial.list(app.ondevicelist, app.generateFailureFunction("List Failed"));
 },
@@ -39,59 +40,61 @@ setStatus: function(status) {
     messageDiv.innerText = status;
     app.timeoutId = setTimeout(function() { messageDiv.innerText = ""; }, 4000);
 },
+    
 allPeripherals: {}, // global-ish object, holding all our found peripherals
-
+    
+totalPeripherals: 0,
+    
 ondevicelist: function(devices) {
-
-    console.log("devicelist", devices);
     
-    var listItem, deviceId, rssi;
+    document.getElementById('status').innerHTML = "Found Devices: "+devices.length;
     
-    // remove existing devices
-    deviceList.innerHTML = "";
-    app.setStatus("");
-    
-    var chickenParma = ["chicken", "pepper", "cheese", "garlicPowder", "oil", "marinaraSauce", "ItalianSeasoning"];
+    var chickenParma = ["chicken", "pepper", "cheese", "marinaraSauce"];
     
     devices.forEach(function(device) {
-        listItem = document.createElement('li');
-        listItem.className = "topcoat-list__item";
-        if (device.hasOwnProperty("uuid")) { // TODO https://github.com/don/BluetoothSerial/issues/5
-            deviceId = device.uuid;
-        } else if (device.hasOwnProperty("address")) {
-            deviceId = device.address;
-        } else {
-            deviceId = "ERROR " + JSON.stringify(device);
-        }
-        if (device.hasOwnProperty("uuid")) {
-            rssi = device.rssi;
-        } else {
-            rssi = "unknown";
-        }
-        
-        listItem.setAttribute('deviceId', device.address);
                     
-        var randomnumber=Math.floor(Math.random()*11);
-        var img = document.createElement('img');
-        img.src = "img/"+chickenParma[randomnumber]+".png";
+                    var deviceId = undefined;
+                    var rssi = undefined;
                     
-        listItem.innerHTML = device.name + "<br/>" + rssi + "<br/><i>" + deviceId + "</i>";
-        listItem.appendChild(img);
-        deviceList.appendChild(listItem);
-    });
+                    if (device.hasOwnProperty("uuid")) {
+                    deviceId = device.uuid;
+                    } else if (device.hasOwnProperty("address")) {
+                    deviceId = device.address;
+                    }
+                    if (device.hasOwnProperty("uuid")) {
+                    rssi = device.rssi;
+                    }
+                    
+                    if(deviceId && !app.allPeripherals[deviceId]){
+                    var p = {
+                    'id':deviceId,
+                    'rssi':rssi || 'no RSSI',
+                    'elem': document.createElement('li'),
+                    'img': document.createElement('img'),
+                    'text': document.createElement('div'),
+                    'food':undefined
+                    }
+                    p.elem.className ="topcoat-list__item";
+                    
+                    var ri= Math.floor(Math.random()*chickenParma.length);
+                    p.food = chickenParma[ri];
+                    p.img.src = "./img/"+p.food+".png";
+                    p.text.innerHTML = p.food + "<br/>" + rssi + "<br/><i>" + deviceId + "</i>";
+                    
+                    p.elem.appendChild(p.text);
+                    p.elem.appendChild(p.img);
+                    
+                    document.getElementById('deviceList').appendChild(p.elem);
+                    app.allPeripherals[deviceId] = p;
+                    totalPeripherals++;
+                    }
+                    else{
+                    app.allPeripherals[deviceId].rssi = rssi;
+                    app.allPeripherals[deviceId].text.innerHTML = app.allPeripherals[deviceId].food + "<br/>" + rssi + "<br/><i>" + deviceId + "</i>";
+                    }
+                    });
     
-    if (devices.length === 0) {
-        
-        if (cordova.platformId === "ios") { // BLE
-            app.setStatus("No Bluetooth Peripherals Discovered.");
-        } else { // Android
-            app.setStatus("Please Pair a Bluetooth Device.");
-        }
-        
-    } else {
-        app.setStatus("Found " + devices.length + " device" + (devices.length === 1 ? "." : "s."));
-    }
-    setTimeout(app.list, 100);
+    setTimeout(app.list, 30);
 },
 generateFailureFunction: function(message) {
     var func = function(reason) {
