@@ -11,6 +11,7 @@ bind: function() {
 circleX: 140,
 circleSize: 80,
 verticalLineWidth: 6,
+circleIcons: [],
 deviceready: function() {
     
     if(window.cordova.logger) {
@@ -24,6 +25,17 @@ deviceready: function() {
     cornerButton.style.top = Math.floor(cornerButton.offsetHeight*0.5)+'px';
     var getItButton = document.getElementById('getItButton');
     getItButton.style.top = Math.floor(window.innerHeight-getItButton.offsetHeight)+'px';
+
+    console.log('---- thingy ----');
+
+    for(var i=0;i<4;i++){
+        app.circleIcons[i] = document.createElement('img');
+        console.log('---- thingy ----');
+        console.log(i);
+        app.circleIcons[i].src = 'img/lebasket_Dot_'+i+'.png';
+        app.circleIcons[i].className = "circle";
+        app.circleIcons[i].style.left = Math.floor(app.circleX-(app.circleSize/2))+'px';
+    }
     
     app.list();
 },
@@ -54,9 +66,7 @@ ondevicelist: function(devices) {
                     if(b.rssi > 0) return -1;
                     return b.rssi-a.rssi;
                     });
-    
-    document.getElementById('status').innerHTML = "Found Devices: "+devices.length;
-    
+        
     var chickenParma = ["chicken", "pepper", "cheese", "marinaraSauce"];
     
     devices.forEach(function(device) {
@@ -75,26 +85,25 @@ ondevicelist: function(devices) {
         
         if(deviceId && !app.allPeripherals[deviceId]){
 
+            app.totalPeripherals++;
+
             var p = {
                 'id':deviceId,
                 'rssi':rssi || 'no RSSI',
-                'circleImage': document.createElement('img'),
+                'circleImage': undefined,
                 'foodName':undefined,
                 'updateCounter':0,
                 'x':app.circleX,
                 'y': undefined
             };
 
-            p.circleImage.className = "circle";
-            p.circleImage.style.left = Math.floor(app.circleX-(app.circleSize/2))+'px';
-            p.circleImage.src = 'img/lebasket_Dot_1.png';
+            p.circleImage = app.circleIcons[Math.floor(Math.random()*app.circleIcons.length)];
             document.getElementById('circlesDiv').appendChild(p.circleImage);
             
             var ri= Math.floor(Math.random()*chickenParma.length);
             p.foodName = chickenParma[ri];
             
             app.allPeripherals[deviceId] = p;
-            app.totalPeripherals++;
         }
         else{
             app.allPeripherals[deviceId].rssi = rssi;
@@ -116,15 +125,18 @@ updateCircleOrder: function(){
         }
     }
     if(app.totalPeripherals>0){
+        var iconThresh = app.totalPeripherals/3;
         var bottomMargin = Math.floor(window.innerHeight*.15);
         var topMargin = Math.floor(window.innerHeight*.15);
         var gap = ((window.innerHeight-bottomMargin)-topMargin)/app.totalPeripherals;
         var counter = 0;
         for(var p in app.allPeripherals){
+            var imageIndex = Math.floor(counter/iconThresh);
             var temp = app.allPeripherals[p];
             var tempTop = Math.floor(((gap/2)+(gap*counter)));
             tempTop += topMargin;
             temp.y = tempTop;
+            //temp.circleImage = app.circleIcons[imageIndex];
             temp.circleImage.style.top = Math.floor(tempTop-(app.circleSize/2))+'px';
             counter++;
         }
