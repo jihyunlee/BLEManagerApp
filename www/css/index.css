@@ -28,11 +28,6 @@ input {
     font-size: 4em;
 }
 
-#status {
-    font-size: 30px;
-    color:green;
-}
-
 #sortedGraphics{
     position:absolute;
     top:0px;
@@ -72,6 +67,8 @@ input {
     position: absolute;
     left:200px;
     top:10px;
+    font-size: 30px;
+    color:green;
 }
 
 #getItButton{
@@ -83,4 +80,5 @@ input {
 #cornerButton{
     position:absolute;
     top:0px;
+    left:200px;
 }

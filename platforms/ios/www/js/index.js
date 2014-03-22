@@ -1,5 +1,4 @@
 /* jshint quotmark: false, unused: vars, browser: true */
-/* global cordova, console, $, bluetoothSerial, _, refreshButton, deviceList, previewColor, red, green, blue, disconnectButton, connectionScreen, colorScreen, rgbText, messageDiv */
 'use strict';
 
 var app = {
@@ -8,31 +7,30 @@ initialize: function() {
 },
 bind: function() {
     document.addEventListener('deviceready', this.deviceready, false);
-    colorScreen.hidden = true;
 },
-circleX: 100,
+circleX: 140,
+circleSize: 80,
+verticalLineWidth: 6,
 deviceready: function() {
     
     if(window.cordova.logger) {
         window.cordova.logger.__onDeviceReady();
     }
-    
-    console.log("deviceready");
         
-//    var line = document.getElementById('verticalLine');
-//    line.style.left = this.circleX+'px';
-//    
-    // wire buttons to functions
-    refreshButton.ontouchstart = app.list;
-    disconnectButton.ontouchstart = app.disconnect;
+    var line = document.getElementById('verticalLine');
+    line.style.left = Math.floor(app.circleX-(app.verticalLineWidth*1.3))+'px';
+    var cornerButton = document.getElementById('cornerButton');
+    cornerButton.style.left = Math.floor(window.innerWidth-(cornerButton.offsetWidth*1.5))+'px';
+    cornerButton.style.top = Math.floor(cornerButton.offsetHeight*0.5)+'px';
+    var getItButton = document.getElementById('getItButton');
+    getItButton.style.top = Math.floor(window.innerHeight-getItButton.offsetHeight)+'px';
+    
+    app.list();
 },
 setName: function(name) {
-    bluetoothSerial.writePeripheralName("grocery","item",name);
+    BluetoothSerial.writePeripheralName("grocery","item","milk");
 },
 list: function(event) {
-    console.log("===============list=============");
-    document.getElementById('status').innerHTML = "Discovering...";
-    
     bluetoothSerial.list(app.ondevicelist, app.generateFailureFunction("List Failed"));
 },
 timeoutId: 0,
@@ -50,8 +48,6 @@ totalPeripherals: 0,
     
 ondevicelist: function(devices) {
     
-    console.log("ondevicelist", devices.length);
-    
     // sort by distance (rssi)
     devices = devices.sort(function(a,b){
                     if(a.rssi > 0) return 1;
@@ -65,66 +61,74 @@ ondevicelist: function(devices) {
     
     devices.forEach(function(device) {
                     
-                    console.log(device);
-                    
-                    var deviceId = undefined;
-                    var rssi = undefined;
-                    
-                    if (device.hasOwnProperty("uuid")) {
-                    deviceId = device.uuid;
-                    } else if (device.hasOwnProperty("address")) {
-                    deviceId = device.address;
-                    }
-                    if (device.hasOwnProperty("uuid")) {
-                    rssi = device.rssi;
-                    }
-                    
-                    if(deviceId && !app.allPeripherals[deviceId]){
-                    var p = {
-                    'id':deviceId,
-                    'rssi':rssi || 'no RSSI',
-                    'elem': document.createElement('li'),
-                    'img': document.createElement('img'),
-                    'text': document.createElement('div'),
-                    'food':undefined,
-                    'inBasket': false
-                    }
-                    p.elem.className ="topcoat-list__item";
-                    
-                    if(rssi < -50)
-                        p.inBasket = true;
-                    
-                    var ri= Math.floor(Math.random()*chickenParma.length);
-                    p.food = chickenParma[ri];
-                    p.img.src = "./img/"+p.food+".png";
-                    p.text.innerHTML = p.food + "<br/>" + rssi + "<br/><i>" + deviceId + "</i>";
-                    
-                    p.elem.appendChild(p.text);
-                    p.elem.appendChild(p.img);
-                    
-                    document.getElementById('deviceList').appendChild(p.elem);
-                    app.allPeripherals[deviceId] = p;
-                    totalPeripherals++;
-                    }
-                    
-                    else{
-                    app.allPeripherals[deviceId].rssi = rssi;
-                    app.allPeripherals[deviceId].text.innerHTML = app.allPeripherals[deviceId].food + "<br/>" + rssi + "<br/><i>" + deviceId + "</i>";
-                    }
-                    });
-    
-    console.log("nearest ", app.getNearestItem);
-    
-    setTimeout(app.list, 30);
-},
-getNearestItem: function() {
-    
-    allPeripherals.forEach(function(p) {
-        if(!p.inBasket) return p;
+        var deviceId = undefined;
+        var rssi = undefined;
+        
+        if (device.hasOwnProperty("uuid")) {
+            deviceId = device.uuid;
+        } else if (device.hasOwnProperty("address")) {
+            deviceId = device.address;
+        }
+        if (device.hasOwnProperty("uuid")) {
+            rssi = device.rssi;
+        }
+        
+        if(deviceId && !app.allPeripherals[deviceId]){
+
+            var p = {
+                'id':deviceId,
+                'rssi':rssi || 'no RSSI',
+                'circleImage': document.createElement('img'),
+                'foodName':undefined,
+                'updateCounter':0,
+                'x':app.circleX,
+                'y': undefined
+            };
+
+            p.circleImage.className = "circle";
+            p.circleImage.style.left = Math.floor(app.circleX-(app.circleSize/2))+'px';
+            p.circleImage.src = 'img/lebasket_Dot_1.png';
+            document.getElementById('circlesDiv').appendChild(p.circleImage);
+            
+            var ri= Math.floor(Math.random()*chickenParma.length);
+            p.foodName = chickenParma[ri];
+            
+            app.allPeripherals[deviceId] = p;
+            app.totalPeripherals++;
+        }
+        else{
+            app.allPeripherals[deviceId].rssi = rssi;
+            app.allPeripherals[deviceId].updateCounter = 0;
+        }
     });
     
-    // all items in the basket
-    return null;
+    app.updateCircleOrder();
+    setTimeout(app.list, 100);
+},
+updateCircleOrder: function(){
+    for(var p in app.allPeripherals){
+        var temp = app.allPeripherals[p];
+        temp.updateCounter++;
+        if(temp.updateCounter>3){
+            app.totalPeripherals--;
+            delete app.allPeripherals[p];
+            temp.circleImage.parentNode.removeChild(temp.circleImage);
+        }
+    }
+    if(app.totalPeripherals>0){
+        var bottomMargin = Math.floor(window.innerHeight*.15);
+        var topMargin = Math.floor(window.innerHeight*.15);
+        var gap = ((window.innerHeight-bottomMargin)-topMargin)/app.totalPeripherals;
+        var counter = 0;
+        for(var p in app.allPeripherals){
+            var temp = app.allPeripherals[p];
+            var tempTop = Math.floor(((gap/2)+(gap*counter)));
+            tempTop += topMargin;
+            temp.y = tempTop;
+            temp.circleImage.style.top = (tempTop-(app.circleSize/2))+'px';
+            counter++;
+        }
+    }
 },
 generateFailureFunction: function(message) {
     var func = function(reason) {

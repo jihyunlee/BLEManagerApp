@@ -1,5 +1,4 @@
 /* jshint quotmark: false, unused: vars, browser: true */
-/* global cordova, console, $, bluetoothSerial, _, refreshButton, deviceList, previewColor, red, green, blue, disconnectButton, connectionScreen, colorScreen, rgbText, messageDiv */
 'use strict';
 
 var app = {
@@ -21,20 +20,17 @@ deviceready: function() {
     var line = document.getElementById('verticalLine');
     line.style.left = Math.floor(app.circleX-(app.verticalLineWidth*1.3))+'px';
     var cornerButton = document.getElementById('cornerButton');
-    cornerButton.style.left = Math.floor(window.innerWidth-100)+'px';
+    cornerButton.style.left = Math.floor(window.innerWidth-(cornerButton.offsetWidth*1.5))+'px';
+    cornerButton.style.top = Math.floor(cornerButton.offsetHeight*0.5)+'px';
     var getItButton = document.getElementById('getItButton');
     getItButton.style.top = Math.floor(window.innerHeight-getItButton.offsetHeight)+'px';
     
-    // wire buttons to functions
-    refreshButton.ontouchstart = app.list;
-    disconnectButton.ontouchstart = app.disconnect;
+    app.list();
 },
 setName: function(name) {
     BluetoothSerial.writePeripheralName("grocery","item","milk");
 },
 list: function(event) {
-    document.getElementById('status').innerHTML = "Discovering...";
-    
     bluetoothSerial.list(app.ondevicelist, app.generateFailureFunction("List Failed"));
 },
 timeoutId: 0,
@@ -84,12 +80,14 @@ ondevicelist: function(devices) {
                 'rssi':rssi || 'no RSSI',
                 'circleImage': document.createElement('img'),
                 'foodName':undefined,
-                'updateCounter':0
+                'updateCounter':0,
+                'x':app.circleX,
+                'y': undefined
             };
 
             p.circleImage.className = "circle";
             p.circleImage.style.left = Math.floor(app.circleX-(app.circleSize/2))+'px';
-            p.circleImage.src = 'img/lebasket_Dot12.png';
+            p.circleImage.src = 'img/lebasket_Dot_1.png';
             document.getElementById('circlesDiv').appendChild(p.circleImage);
             
             var ri= Math.floor(Math.random()*chickenParma.length);
@@ -114,15 +112,20 @@ updateCircleOrder: function(){
         if(temp.updateCounter>3){
             app.totalPeripherals--;
             delete app.allPeripherals[p];
-            temp.circleImage.parentNode.removeChild(temp);
+            temp.circleImage.parentNode.removeChild(temp.circleImage);
         }
     }
     if(app.totalPeripherals>0){
-        var gap = window.innerHeight/app.totalPeripherals;
+        var bottomMargin = Math.floor(window.innerHeight*.15);
+        var topMargin = Math.floor(window.innerHeight*.15);
+        var gap = ((window.innerHeight-bottomMargin)-topMargin)/app.totalPeripherals;
         var counter = 0;
-        for(var temp in app.allPeripherals){
+        for(var p in app.allPeripherals){
             var temp = app.allPeripherals[p];
-            temp.circleImage.style.top = (Math.floor((gap/2)+(gap*counter))-app.circleSize/2)+'px';
+            var tempTop = Math.floor(((gap/2)+(gap*counter)));
+            tempTop += topMargin;
+            temp.y = tempTop;
+            temp.circleImage.style.top = (tempTop-(app.circleSize/2))+'px';
             counter++;
         }
     }
