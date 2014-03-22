@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -15,22 +15,15 @@
                 <h1 class="topcoat-navigation-bar__title">Andy Su and j</h1>
             </div>
         </div>
-        <div id="connectionScreen">
-            <ul id="deviceList" class="topcoat-list">
-            </ul>
-            <div style="margin: 10px">
-                <button class="topcoat-button" id="refreshButton">refresh</button>
-            </div>
-        </div>
         <div id="sortedGraphics">
-            <img class="sortedBackground" src="img/lebasket_background.png" />
-            <img class="verticalLine" id="verticalLine" src="img/lebasket_line.png" />
-            <div class="circlesDiv"></div>
-            <div class="highlightDiv">
-                <img class="dottedLine" src="img/lebasket_dotted_line.png" />
-                <img class="highlightedImage" />
-            </div>
+            <img class="sortedBackground" id="sortedBackground" src="img/lebasket_background.png" />
+            <img id="verticalLine" src="img/lebasket_line.png" />
+            <div id="circlesDiv"></div>
+            <img id="cornerButton" src="img/lebasket.lebasket.psd_0001s_0002_Button.png" />
+            <img id="getItButton" src="img/lebasket.psd_Getit_Button.png" />
         </div>
+        <button id="refreshButton">Refresh</button>
+        <div id="status"></div>
         <div id="messageDiv">
             <script type="text/javascript" src="cordova.js"></script>
             <script type="text/javascript" src="js/underscore-min.js"></script>
