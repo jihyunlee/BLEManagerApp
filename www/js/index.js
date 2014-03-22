@@ -11,7 +11,8 @@ bind: function() {
     colorScreen.hidden = true;
 },
 deviceready: function() {
-    
+    console.log("deviceready");
+    console.log("deviceready2");
     if(window.cordova.logger) {
         window.cordova.logger.__onDeviceReady();
     }
