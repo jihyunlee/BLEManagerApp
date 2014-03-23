@@ -103,3 +103,10 @@ input {
     left:80px;
     top:0px;
 }
+
+.circleSpan{
+    position:absolute;
+    left: 180px;
+    color: white;
+    font-size: 24px;
+}
