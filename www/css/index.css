@@ -1,5 +1,9 @@
 body {
     text-align: center;
+    width:100%;
+    height:100%;
+    overflow:visible;
+    position:fixed;
 }
 
 select {
@@ -81,4 +85,21 @@ input {
     position:absolute;
     top:0px;
     left:200px;
+}
+
+#selectedFood{
+    position:absolute;
+    height:390px;
+    width:470px;
+}
+
+#dottedLine{
+    position:absolute;
+    left:0px;
+    top:195px;
+}
+#bigImage{
+    position:absolute;
+    left:80px;
+    top:0px;
 }
