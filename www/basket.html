@@ -10,16 +10,14 @@
         <script src="js/jquery-1.9.1.min.js"></script>
     </head>
     <body>
-<!--         <div class="topcoat-navigation-bar">
-            <div class="topcoat-navigation-bar__item center full">
-                <h1 class="topcoat-navigation-bar__title">Andy Su and j</h1>
-            </div>
-        </div> -->
         <div id="sortedGraphics">
             <img class="sortedBackground" id="sortedBackground" src="img/lebasket_background.png" />
             <img id="verticalLine" src="img/lebasket_line.png" />
             <div id="circlesDiv"></div>
-            <img id="cornerButton" src="img/lebasket.psd_0001s_0002_Button.png" />
+            <FORM METHOD="LINK" ACTION="index.html">
+                <input type="image" class="homeButton" src="img/lebasket_Button.png">
+            </FORM>
+            <!-- <img id="cornerButton" src="img/lebasket_Button.png" /> -->
             <!-- leave out the Get It button for now (using RSSI instead) -->
             <!-- <img id="getItButton" src="img/lebasket.psd_Getit_Button.png" /> -->
             <div id="selectedFood" style="display:none">
@@ -27,12 +25,13 @@
                 <img id="bigImage" src="img/lebasket_marinarasauce.png" />
             </div>
         </div>
-        <div id="messageDiv">
-            <script type="text/javascript" src="cordova.js"></script>
-            <script type="text/javascript" src="js/underscore-min.js"></script>
-            <script type="text/javascript" src="js/index.js"></script>
-            <script type="text/javascript">
-                app.initialize();
-            </script>
-        </body>
+        <div id="messageDiv"></div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/underscore-min.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/homebutton.js"></script>
+        <script type="text/javascript">
+            app.initialize();
+        </script>
+    </body>
 </html>

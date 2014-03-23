@@ -8,7 +8,7 @@ initialize: function() {
 bind: function() {
     document.addEventListener('deviceready', this.deviceready, false);
 },
-circleX: 140,
+circleX: 0,
 circleSize: 80,
 verticalLineWidth: 6,
 circleIcons: [],
@@ -18,14 +18,14 @@ deviceready: function() {
     if(window.cordova.logger) {
         window.cordova.logger.__onDeviceReady();
     }
-    
+
+    app.circleX = Math.floor(window.innerWidth * .15);
 
     // setting style stuff for the images, because I suck at CSS
     var line = document.getElementById('verticalLine');
-    line.style.left = Math.floor(app.circleX-(app.verticalLineWidth*1.3))+'px';
-    var cornerButton = document.getElementById('cornerButton');
-    cornerButton.style.left = Math.floor(window.innerWidth-(cornerButton.offsetWidth*1.5))+'px';
-    cornerButton.style.top = Math.floor(cornerButton.offsetHeight*0.5)+'px';
+//    line.style.left = Math.floor(app.circleX-(app.verticalLineWidth*1.3))+'px';
+    line.style.left = app.circleX-app.verticalLineWidth+'px';
+    
     // var getItButton = document.getElementById('getItButton');
     // getItButton.style.top = Math.floor(window.innerHeight-getItButton.offsetHeight)+'px';
 

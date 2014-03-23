@@ -83,11 +83,11 @@ li {
     width:100%;
 }
 
-#cornerButton{
+/*#cornerButton{
     position:absolute;
     top:0px;
-    left:200px;
-}
+    right:200px;
+}*/
 
 #selectedFood{
     position:absolute;
@@ -138,6 +138,6 @@ li {
     z-index: 3;
 }
 
-.homeButton {
+/*.homeButton {
     position:absolute; top: 35px; right: 10px; z-index: 5;
-}
+}*/

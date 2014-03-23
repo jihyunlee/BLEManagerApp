@@ -7,26 +7,12 @@ body {
     margin: 0;
     padding: 0;
 }
-
 select {
     min-width: 200px;
 }
-
-input {
-    /*    display:block;
-     margin-top: 30px;
-     margin-bottom: 30px;
-     */    
-     /*width: 100%;*/
-}
-img {
-
-}
-
 ul {
     list-style: none;
 }
-
 li {
     display: inline-block;
     float: left;
@@ -97,11 +83,11 @@ li {
     width:100%;
 }
 
-#cornerButton{
+/*#cornerButton{
     position:absolute;
     top:0px;
-    left:200px;
-}
+    right:200px;
+}*/
 
 #selectedFood{
     position:absolute;
@@ -152,9 +138,6 @@ li {
     z-index: 3;
 }
 
-.homeButton {
+/*.homeButton {
     position:absolute; top: 35px; right: 10px; z-index: 5;
-}
-=======
-}
->>>>>>> FETCH_HEAD
+}*/
