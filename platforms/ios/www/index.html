@@ -9,21 +9,24 @@
     </head>
     <body>
         <div class="container">
-            <FORM METHOD="LINK" ACTION="index.html">
-                <input type="image" class="homeButton" src="img/lebasket_Button.png">
-            </FORM>
-                    
-            <img class="backgroundImg list" src="img/GrilledVegetableTostadas_img.png" alt="Respond">              
-            <input type="image" class="imgButtons" src="img/GrilledVegetableTostadas_Button.png" style="bottom: 66.66%;" name="image">
-                        
-            <img class="backgroundImg list"  src="img/LinguineClamSauce_img.png" alt="Respond">
-            <input type="image" class="imgButtons" src="img/LinguineClamSauce_Button.png" style="bottom: 33.33%" name="image">
-    
-            <img class="backgroundImg list" src="img/ChickenParmasan_img.png" alt="Respond">
-            <FORM METHOD="LINK" ACTION="recipe.html">
-                <input type="image" class="imgButtons" src="img/ChickenParmasan_Button.png" style="bottom:0px; right:0px;" name="image" value"Clickable Button">
-            </FORM>
+            <ul id="recipe-list">
+                <li class="recipe-listitem">        
+                    <img class="backgroundImg" src="img/GrilledVegetableTostadas_img.png" alt="Respond">              
+                    <input type="image" class="imgButtons" src="img/GrilledVegetableTostadas_Button.png" name="image">
+                </li>
+                     
+                <li class="recipe-listitem"> 
+                    <img class="backgroundImg"  src="img/LinguineClamSauce_img.png" alt="Respond">
+                    <input type="image" class="imgButtons" src="img/LinguineClamSauce_Button.png" name="image">
+                </li>
+
+                <li class="recipe-listitem">        
+                    <img class="backgroundImg" src="img/ChickenParmasan_img.png" alt="Respond">
+                    <FORM METHOD="LINK" ACTION="recipe.html">
+                        <input type="image" class="imgButtons" src="img/ChickenParmasan_Button.png" name="image" value="Clickable Button">
+                    </FORM>
+                </li>
+            </ul>
         </div>
-        <script type="text/javascript" src="js/homebutton.js"></script>
     </body>
 </html>
