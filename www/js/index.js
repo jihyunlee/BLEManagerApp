@@ -9,7 +9,7 @@ bind: function() {
     document.addEventListener('deviceready', this.deviceready, false);
 },
 circleX: 0,
-circleSize: 80,
+circleSize: 0,
 verticalLineWidth: 6,
 circleIcons: [],
 selectedDiv: document.getElementById('selectedFood'),
@@ -20,11 +20,11 @@ deviceready: function() {
     }
 
     app.circleX = Math.floor(window.innerWidth * .15);
+    app.circleSize = Math.floor(window.innerWidth * .12);
 
     // setting style stuff for the images, because I suck at CSS
     var line = document.getElementById('verticalLine');
-//    line.style.left = Math.floor(app.circleX-(app.verticalLineWidth*1.3))+'px';
-    line.style.left = app.circleX-app.verticalLineWidth+'px';
+    line.style.left = Math.floor(app.circleX-(app.verticalLineWidth*1.3))+'px';
     
     // var getItButton = document.getElementById('getItButton');
     // getItButton.style.top = Math.floor(window.innerHeight-getItButton.offsetHeight)+'px';
@@ -41,7 +41,9 @@ deviceready: function() {
         app.circleIcons[i] = document.createElement('img');
         app.circleIcons[i].src = 'img/lebasket_Dot_'+i+'.png';
         app.circleIcons[i].className = "circle";
-        app.circleIcons[i].style.left = Math.floor(app.circleX-(app.circleSize/2))+'px';
+        app.circleIcons[i].style.width = app.circleSize+'px';
+        app.circleIcons[i].style.height = app.circleSize+'px';
+        app.circleIcons[i].style.left = app.circleX-(app.circleSize/2)+'px';
     }
     
     // start scanning immediately
