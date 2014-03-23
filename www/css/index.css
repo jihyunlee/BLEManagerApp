@@ -119,6 +119,7 @@ li {
     left:80px;
     top:0px;
 }
+
 .circleSpan{
     position:absolute;
     left: 180px;
@@ -153,3 +154,6 @@ li {
 .homeButton {
     position:absolute; top: 35px; right: 10px; z-index: 5;
 }
+=======
+}
+>>>>>>> FETCH_HEAD

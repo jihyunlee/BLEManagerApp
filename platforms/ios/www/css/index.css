@@ -120,6 +120,7 @@ li {
     top:0px;
 }
 
+<<<<<<< HEAD
 /*
     SU's
  */
@@ -147,3 +148,11 @@ li {
 .homeButton {
     position:absolute; top: 35px; right: 10px; z-index: 5;
 }
+=======
+.circleSpan{
+    position:absolute;
+    left: 180px;
+    color: white;
+    font-size: 24px;
+}
+>>>>>>> FETCH_HEAD
