@@ -4,6 +4,8 @@ body {
     height:100%;
     overflow:visible;
     position:fixed;
+    margin: 0;
+    padding: 0;
 }
 
 select {
@@ -14,7 +16,21 @@ input {
     /*    display:block;
      margin-top: 30px;
      margin-bottom: 30px;
-     */    width: 100%;
+     */    
+     /*width: 100%;*/
+}
+img {
+    width: 100%;
+}
+
+ul {
+    list-style: none;
+}
+
+li {
+    display: inline-block;
+    float: left;
+    padding: 10px
 }
 
 .rangeDiv {
@@ -109,4 +125,32 @@ input {
     left: 180px;
     color: white;
     font-size: 24px;
+}
+
+/*
+    SU's
+ */
+.container {
+    position:relative;
+    height:100%;
+}
+
+.backgroundImg {
+/*    position:absolute; */
+    top: 0px; 
+    left: 0px; 
+    z-index: 1;
+}
+.backgroundImg.list {
+    height:33.333333%;
+}
+
+.imgButtons {
+    position:absolute; 
+    width: 100%;
+    z-index: 3;
+}
+
+.homeButton {
+    position:absolute; top: 35px; right: 10px; z-index: 5;
 }
