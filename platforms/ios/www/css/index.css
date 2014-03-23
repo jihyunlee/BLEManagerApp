@@ -20,7 +20,7 @@ input {
      /*width: 100%;*/
 }
 img {
-    width: 100%;
+
 }
 
 ul {
@@ -120,7 +120,13 @@ li {
     top:0px;
 }
 
-<<<<<<< HEAD
+.circleSpan{
+    position:absolute;
+    left: 180px;
+    color: white;
+    font-size: 24px;
+}
+
 /*
     SU's
  */
@@ -134,6 +140,7 @@ li {
     top: 0px; 
     left: 0px; 
     z-index: 1;
+    width: 100%;
 }
 .backgroundImg.list {
     height:33.333333%;
@@ -149,10 +156,5 @@ li {
     position:absolute; top: 35px; right: 10px; z-index: 5;
 }
 =======
-.circleSpan{
-    position:absolute;
-    left: 180px;
-    color: white;
-    font-size: 24px;
 }
 >>>>>>> FETCH_HEAD

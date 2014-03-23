@@ -19,6 +19,7 @@ deviceready: function() {
         window.cordova.logger.__onDeviceReady();
     }
     
+
     // setting style stuff for the images, because I suck at CSS
     var line = document.getElementById('verticalLine');
     line.style.left = Math.floor(app.circleX-(app.verticalLineWidth*1.3))+'px';
@@ -44,9 +45,7 @@ deviceready: function() {
     }
     
     // start scanning immediately
-//    app.list();
-    var devices = [{uuid:1, rssi:-39},{uuid:2, rssi:-54},{uuid:3, rssi:-78},{uuid:4, rssi:-127},{uuid:5, rssi:-57}];
-    app.ondevicelist(devices);
+    app.list();
 },
 setName: function(name) {
     BluetoothSerial.writePeripheralName("grocery","item","milk");
@@ -68,25 +67,10 @@ allPeripherals: {}, // global-ish object, holding all our found peripherals
 totalPeripherals: 0,
     
 ondevicelist: function(devices) {
-<<<<<<< HEAD
-    console.log("ondevicelist",devices);
-    
-    // sort by distance (rssi)
-    devices = devices.sort(function(a,b){
-        if(a.rssi > 0) return 1;
-        if(b.rssi > 0) return -1;
-        return b.rssi-a.rssi;
-    });
-=======
->>>>>>> FETCH_HEAD
         
     var chickenParma = ["chicken", "pepper", "cheese", "marinaraSauce"];
     
-    console.log("before for loop");
-    
     devices.forEach(function(device) {
-    
-        console.log("device",device);
                     
         var deviceId = undefined;
         var rssi = undefined;
@@ -118,8 +102,6 @@ ondevicelist: function(devices) {
             p.span.className = 'circleSpan';
             document.getElementById('circlesDiv').appendChild(p.span);
             
-            console.log('p', p);
-                    
             var ri= Math.floor(Math.random()*chickenParma.length);
             p.foodName = chickenParma[ri];
             
@@ -128,15 +110,13 @@ ondevicelist: function(devices) {
             app.totalPeripherals++;
         }
         else{
-            if(rssi!=127) app.allPeripherals[deviceId].rssi = rssi;
+            app.allPeripherals[deviceId].rssi = rssi;
             app.allPeripherals[deviceId].updateCounter = 0;
         }
     });
-
-    //sort
     
     app.updateCircleOrder();
-//    setTimeout(app.list, 100);
+    setTimeout(app.list, 100);
 },
 updateCircleOrder: function(){
 
