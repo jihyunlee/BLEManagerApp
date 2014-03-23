@@ -19,7 +19,6 @@ deviceready: function() {
         window.cordova.logger.__onDeviceReady();
     }
     
-
     // setting style stuff for the images, because I suck at CSS
     var line = document.getElementById('verticalLine');
     line.style.left = Math.floor(app.circleX-(app.verticalLineWidth*1.3))+'px';
@@ -42,7 +41,9 @@ deviceready: function() {
     }
     
     // start scanning immediately
-    app.list();
+//    app.list();
+    var devices = [{uuid:1, rssi:-39},{uuid:2, rssi:-54},{uuid:3, rssi:-78},{uuid:4, rssi:-127},{uuid:5, rssi:-57}];
+    app.ondevicelist(devices);
 },
 setName: function(name) {
     BluetoothSerial.writePeripheralName("grocery","item","milk");
@@ -64,6 +65,7 @@ allPeripherals: {}, // global-ish object, holding all our found peripherals
 totalPeripherals: 0,
     
 ondevicelist: function(devices) {
+    console.log("ondevicelist",devices);
     
     // sort by distance (rssi)
     devices = devices.sort(function(a,b){
@@ -74,7 +76,11 @@ ondevicelist: function(devices) {
         
     var chickenParma = ["chicken", "pepper", "cheese", "marinaraSauce"];
     
+    console.log("before for loop");
+    
     devices.forEach(function(device) {
+    
+        console.log("device",device);
                     
         var deviceId = undefined;
         var rssi = undefined;
@@ -101,6 +107,8 @@ ondevicelist: function(devices) {
                 'selected':false
             };
             
+            console.log('p', p);
+                    
             var ri= Math.floor(Math.random()*chickenParma.length);
             p.foodName = chickenParma[ri];
             
@@ -109,13 +117,15 @@ ondevicelist: function(devices) {
             app.totalPeripherals++;
         }
         else{
-            app.allPeripherals[deviceId].rssi = rssi;
+            if(rssi!=127) app.allPeripherals[deviceId].rssi = rssi;
             app.allPeripherals[deviceId].updateCounter = 0;
         }
     });
+
+    //sort
     
     app.updateCircleOrder();
-    setTimeout(app.list, 100);
+//    setTimeout(app.list, 100);
 },
 updateCircleOrder: function(){
 
