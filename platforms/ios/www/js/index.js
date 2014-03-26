@@ -9,10 +9,9 @@ var items = [
     {UUID: "38E99282", name: "Cheese", img: "cheese"}, // jihyun's iPad
     {UUID: "C9FE56F2", name: "Garlic", img: "garlic"}, // su's iphone
     {UUID: "841FE244", name: "Olive oil", img: "oil"}, // su's ipad
-    {UUID: "00000000", name: "Marinara Sauce", img: "marinaraSauce"}, // andy's iphone
-    {UUID: "11111111", name: "Italian Seasoning", img: "ItalianSeasoning"} // andy's laptop
+    {UUID: "D9420B32", name: "Marinara Sauce", img: "marinaraSauce"}, // andy's iphone
+    {UUID: "21D22E66", name: "Italian Seasoning", img: "ItalianSeasoning"} // andy's laptop
 ];
-
 
 var app = {
 initialize: function() {
@@ -47,6 +46,9 @@ deviceready: function() {
     app.selectedDiv.style.display = 'none';
     app.selectedDiv.ontouchstart = function(){
         app.selectedDiv.style.display = 'none';
+        for(var n in app.allPeripherals){
+            app.allPeripherals[n].selected = false;
+        }
     }
 
     // just saving the different circle icons for easy loading later
@@ -100,42 +102,39 @@ ondevicelist: function(devices) {
         if(deviceId && !app.allPeripherals[deviceId]){
                     
             // find matching id...
-            items.forEach(function (item) {
-                if(deviceId.substring(0,8) == item.UUID) {
+            if(rssi>-80 && rssi!=127) {
+                var item = items[Math.floor(Math.random()*items.length)];
+                var p = {
+                    'id':deviceId,
+                    'rssi':rssi || 'no RSSI',
+                    'circleImage': undefined,
+                    'span': document.createElement('span'),
+                    'foodName':undefined,
+                    'foodImage':undefined,
+                    'updateCounter':-1,
+                    'x':app.circleX,
+                    'y': undefined,
+                    'selected':false,
+                    'inBasket': false
+                };
 
-                    var p = {
-                        'id':deviceId,
-                        'rssi':rssi || 'no RSSI',
-                        'circleImage': undefined,
-                        'span': document.createElement('span'),
-                        'foodName':undefined,
-                        'foodImage':undefined,
-                        'updateCounter':-1,
-                        'x':app.circleX,
-                        'y': undefined,
-                        'selected':false,
-                        'inBasket': false
-                    };
-
-                    p.span.className = 'circleSpan';
-                    document.getElementById('circlesDiv').appendChild(p.span);
-                    
+                p.span.className = 'circleSpan';
+                document.getElementById('circlesDiv').appendChild(p.span);
+                
 //                    var ri= Math.floor(Math.random()*chickenParma.length);
-                    p.foodName = item.name;
-                    p.foodImage = item.img;
+                p.foodName = item.name;
+                p.foodImage = item.img;
 
-                    app.allPeripherals[deviceId] = p;
+                app.allPeripherals[deviceId] = p;
 
-                    app.totalPeripherals++;                    
+                app.totalPeripherals++;                    
 
-                }
-            });
-
-
+            }
         }
-        else{
-            app.allPeripherals[deviceId].rssi = rssi;
+        else if(app.allPeripherals[deviceId]){
+            if(rssi!=127) app.allPeripherals[deviceId].rssi = rssi;
             app.allPeripherals[deviceId].updateCounter = 0;
+            if(rssi>-50 && rssi!=127) app.allPeripherals[deviceId].inBasket = true;
         }
     });
     
@@ -246,13 +245,22 @@ updateCircleIcon: function(_p,counter){
     _p.circleImage.style.top = Math.floor(tempTop-(app.circleSize/2))+'px';
 
     _p.span.style.top = Math.floor(tempTop-(app.circleSize/2))+'px';
-    _p.span.innerHTML = _p.foodName + '     ' + _p.rssi;
+    if(_p.selected){
+        _p.span.innerHTML = '';
+    }
+    else{
+        _p.span.innerHTML = _p.foodName + '     ' + _p.rssi;
+    }
 },
 moveSelection: function(_p){
     // pass the touched peripheral to the big info thing
     // this moves the big info thing to that circle, and can later set it's image/text
     app.selectedDiv.style.display = 'block';
-    app.selectedDiv.style.top = Math.floor(_p.y/*-(app.selectedDiv.offsetHeight/2)*/)+'px';
+
+    var w = Math.floor(window.innerWidth*.3);
+    app.selectedDiv.style.top = Math.floor(_p.y-(w/2))+'px';
+    app.selectedDiv.style.width = w+'px';
+    document.getElementById('dottedLine').style.top = Math.floor(w/2)+'px';
     _p.selected = true;
     
     // console.log('selected', _p.foodName);
@@ -264,7 +272,6 @@ moveSelection: function(_p){
     // }
     var e = document.getElementById('bigImage');
     e.src = "img/"+_p.foodImage+".png";
-    e.style.width = "30%";
 
     for(var p in app.allPeripherals){
         if(app.allPeripherals[p]!=_p){

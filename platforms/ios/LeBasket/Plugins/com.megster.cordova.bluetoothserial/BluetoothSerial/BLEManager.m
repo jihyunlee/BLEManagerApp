@@ -135,9 +135,9 @@ static bool isConnected = false;
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];
     [pluginResult setKeepCallbackAsBool:TRUE];
     
-    [self scan:3];
+    [self scan:1.5];
     
-    [NSTimer scheduledTimerWithTimeInterval:(float)3.0
+    [NSTimer scheduledTimerWithTimeInterval:(float)1.5
                                      target:self
                                    selector:@selector(listPeripheralsTimer:)
                                    userInfo:[command.callbackId copy]
