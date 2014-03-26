@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C558DD0D-5602-4A5F-9498-F3A64E16B377</string>
+	<key>IDESourceControlProjectName</key>
+	<string>LeBasket</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>27852826-0291-4EA0-8ECF-5DF171ED2393</key>
+		<string>https://github.com/jihyunlee/LeBasket.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>platforms/ios/LeBasket.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>27852826-0291-4EA0-8ECF-5DF171ED2393</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/jihyunlee/LeBasket.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>27852826-0291-4EA0-8ECF-5DF171ED2393</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>27852826-0291-4EA0-8ECF-5DF171ED2393</string>
+			<key>IDESourceControlWCCName</key>
+			<string>LeBasket</string>
+		</dict>
+	</array>
+</dict>
+</plist>

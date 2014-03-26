@@ -20,10 +20,10 @@
     },
     "installed_plugins": {
         "com.megster.cordova.bluetoothserial": {
-            "PACKAGE_NAME": "com.jihyun.BLEManagerApp"
+            "PACKAGE_NAME": "com.jihyun.LeBasket"
         },
         "org.apache.cordova.console": {
-            "PACKAGE_NAME": "com.jihyun.BLEManagerApp"
+            "PACKAGE_NAME": "com.jihyun.LeBasket"
         }
     },
     "dependent_plugins": {}
