@@ -1,6 +1,19 @@
 /* jshint quotmark: false, unused: vars, browser: true */
 'use strict';
 
+var chickenParma = [ "Chicken", "Pepper", "Cheese", "Garlic", "Olive oil", "Marinara Sauce","Italian Seasoning" ];
+var chickenParmaImg = [ "chicken", "pepper", "cheese", "garlic", "oil", "marinaraSauce", "ItalianSeasoning" ];
+var items = [
+    {UUID: "24215973", name: "Chicken", img: "chicken"}, // Bisket
+    {UUID: "5EF79300", name: "Pepper", img: "pepper"}, // StickNFind
+    {UUID: "38E99282", name: "Cheese", img: "cheese"}, // jihyun's iPad
+    {UUID: "C9FE56F2", name: "Garlic", img: "garlic"}, // su's iphone
+    {UUID: "841FE244", name: "Olive oil", img: "oil"}, // su's ipad
+    {UUID: "00000000", name: "Marinara Sauce", img: "marinaraSauce"}, // andy's iphone
+    {UUID: "11111111", name: "Italian Seasoning", img: "ItalianSeasoning"} // andy's laptop
+];
+
+
 var app = {
 initialize: function() {
     this.bind();
@@ -69,8 +82,6 @@ allPeripherals: {}, // global-ish object, holding all our found peripherals
 totalPeripherals: 0,
     
 ondevicelist: function(devices) {
-        
-    var chickenParma = ["chicken", "pepper", "cheese", "marinaraSauce"];
     
     devices.forEach(function(device) {
                     
@@ -87,29 +98,40 @@ ondevicelist: function(devices) {
         }
         
         if(deviceId && !app.allPeripherals[deviceId]){
+                    
+            // find matching id...
+            items.forEach(function (item) {
+                if(deviceId.substring(0,8) == item.UUID) {
 
-            var p = {
-                'id':deviceId,
-                'rssi':rssi || 'no RSSI',
-                'circleImage': undefined,
-                'span': document.createElement('span'),
-                'foodName':undefined,
-                'updateCounter':-1,
-                'x':app.circleX,
-                'y': undefined,
-                'selected':false,
-                'inBasket': false
-            };
+                    var p = {
+                        'id':deviceId,
+                        'rssi':rssi || 'no RSSI',
+                        'circleImage': undefined,
+                        'span': document.createElement('span'),
+                        'foodName':undefined,
+                        'foodImage':undefined,
+                        'updateCounter':-1,
+                        'x':app.circleX,
+                        'y': undefined,
+                        'selected':false,
+                        'inBasket': false
+                    };
 
-            p.span.className = 'circleSpan';
-            document.getElementById('circlesDiv').appendChild(p.span);
-            
-            var ri= Math.floor(Math.random()*chickenParma.length);
-            p.foodName = chickenParma[ri];
-            
-            app.allPeripherals[deviceId] = p;
+                    p.span.className = 'circleSpan';
+                    document.getElementById('circlesDiv').appendChild(p.span);
+                    
+//                    var ri= Math.floor(Math.random()*chickenParma.length);
+                    p.foodName = item.name;
+                    p.foodImage = item.img;
 
-            app.totalPeripherals++;
+                    app.allPeripherals[deviceId] = p;
+
+                    app.totalPeripherals++;                    
+
+                }
+            });
+
+
         }
         else{
             app.allPeripherals[deviceId].rssi = rssi;
@@ -230,8 +252,20 @@ moveSelection: function(_p){
     // pass the touched peripheral to the big info thing
     // this moves the big info thing to that circle, and can later set it's image/text
     app.selectedDiv.style.display = 'block';
-    app.selectedDiv.style.top = Math.floor(_p.y-(app.selectedDiv.offsetHeight/2))+'px';
+    app.selectedDiv.style.top = Math.floor(_p.y/*-(app.selectedDiv.offsetHeight/2)*/)+'px';
     _p.selected = true;
+    
+    // console.log('selected', _p.foodName);
+    
+    // for(var i=0; i<chickenParma.length; i++){
+    //     if(chickenParma[i] == _p.foodName) {
+            
+    //     }
+    // }
+    var e = document.getElementById('bigImage');
+    e.src = "img/"+_p.foodImage+".png";
+    e.style.width = "30%";
+
     for(var p in app.allPeripherals){
         if(app.allPeripherals[p]!=_p){
             app.allPeripherals[p].selected = false;
